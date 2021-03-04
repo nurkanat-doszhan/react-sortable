@@ -18,7 +18,13 @@ const SortableList = SortableContainer(({items}) => {
 
 class App extends Component {
   state = {
-    items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
+    items: ['Item 1', 'Item 2', 'Item 3'],
+    form: [
+      { label:'Name', placeholder: 'First Name', icon: 'fas fa-user' },
+      { label:'Phone Number', placeholder: 'Phone number', icon: 'fas fa-phone-alt' },
+      { label:'Email', placeholder: 'Email', icon: 'fas fa-envelope' },
+    ],
+    isSuccess: false
   };
 
   onSortEnd = ({oldIndex, newIndex}) => {
@@ -27,6 +33,18 @@ class App extends Component {
     }));
   };
 
+  toggleSuccessClass = (e) => {
+    if(e.target.value !== '') {
+      this.setState({
+        isSuccess: true
+      });
+    } else if (e.target.value === '') {
+      this.setState({
+        isSuccess: false
+      });
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -34,6 +52,33 @@ class App extends Component {
           Hello World
         </h1>
         <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
+        
+        <div className="columns mt-6">
+          {
+            this.state.form.map((index, v) => {
+              return (
+                <div className="column" key={v}>
+                  <div className="field">
+                    <label className="label">{index.label}</label>
+                    <div className={`control has-icons-left ${index.label === 'Email' ? 'has-icons-right' : null }`}>
+                      <input
+                        key={v}
+                        className={ `input${ this.state.isSuccess ? ` is-success ${v}` : '' }` }
+                        type={ index.label === 'Email' ? 'email' : 'text' }
+                        placeholder={ index.placeholder }
+                        onBlur={ this.toggleSuccessClass }
+                      />
+                      <span className="icon is-small is-left">
+                        <i className={index.icon}></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )
+            })
+          }
+        </div>
+        <progress className="progress is-success" value="1" max="100" />
       </div>
     );
   }
