@@ -17,16 +17,18 @@ const SortableList = SortableContainer(({items}) => {
   );
 });
 
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      items: ['Item 1', 'Item 2', 'Item 3'],
+      items: ['drag & drop 1', 'drag & drop 2', 'drag & drop 3'],
       form: [ 
-        { label:'Name', placeholder: 'First Name', icon: 'fas fa-user', value: 1 },
-        { label:'Phone Number', placeholder: 'Phone number', icon: 'fas fa-phone-alt', value: 0 },
-        { label:'Email', placeholder: 'Email', icon: 'fas fa-envelope', value: 1 },
-      ]
+        { id: 0, label:'Name', placeholder: 'First Name', icon: 'fas fa-user', value: 0 },
+        { id: 1, label:'Phone Number', placeholder: 'Phone number', icon: 'fas fa-phone-alt', value: 0 },
+        { id: 2, label:'Email', placeholder: 'Email', icon: 'fas fa-envelope', value: 0 },
+      ],
+      isSuccess: false
     };
     this.numRows = 0;
   }
@@ -37,6 +39,19 @@ class App extends Component {
     }));
   };
 
+  getValueHandler = () => {
+    // this.setState({value: 1});
+    alert(this.state.form.value);
+    //     if(e.target.value !== '' && e.target.value !== ' ') {
+    //         setIsSuccess(true);
+    //         alert('true');
+    //     }
+    //     else {
+    //         setIsSuccess(false);
+    //         alert('false');
+    //     }
+  }
+
   render() {
     const leng = this.state.form.filter(len => len.value);
     const numRows = leng.length;
@@ -44,7 +59,7 @@ class App extends Component {
       <div className="container">
         <h1 className="title pt-5">Hello World</h1>
         <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
-        {/* <div className="box">{numRows}</div> */}
+        <div className="box mt-5 has-background-info has-text-info-light is-size-5">{numRows}</div>
         <div className="columns mt-6">
           {
             this.state.form.map((index, v) => {
@@ -56,21 +71,23 @@ class App extends Component {
                   placeholder={ index.placeholder }
                   icon={ index.icon }
                   value={ this.setState.value }
+                  getValue={ this.getValueHandler }
                 />
               )
             })
           }
         </div>
-        <progress className="progress is-success" value={
-          //this.state.form.map((index) => {
-            // if(index.value == 1) {
-            //   alert(index.value);
-            // }
-            //const e2 = index.value;
-            //alert(e2);
-          //})
+        <progress className="progress is-warning" value={
+          this.state.form.map((index) => {
+            // alert("fu 1");
+            if(index.value == 1) {
+              alert("fu 2");
+            }
+            const e2 = index.value;
+              // return e2
+          })
           // return 100 / numRows;
-          13
+          // 15
         } max="100" />
       </div>
     );
